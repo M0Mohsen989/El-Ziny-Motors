@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <style>
+        /* Basic styling for the gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+
+        body {
+            background-color: black;
+            /* Set the background color of the entire page to black */
+            color: white;
+            /* Set text color to white for better contrast */
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img.zoomed {
+            position: relative;
+            /* Return to default position */
+            z-index: 1;
+            /* Ensure the image is on top of other content */
+        }
+
+        /* Credit card details box */
+        .credit-card-details {
+            padding: 20px;
+            background-color: #333;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Input fields for credit card details */
+        .credit-card-details input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: white;
+        }
+
+        /* Reservation button */
+        .reservation-button {
+            display: block;
+            width: 200px;
+            padding: 10px;
+            margin: 20px auto;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Photo Gallery</h1>
+    <div class="gallery">
+        <img src="assets/images/amgsl63/sl1.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl2.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl3.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl4.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl5.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl6.jpg" alt="photo 1">
+        <img src="assets/images/amgsl63/sl7.jpg" alt="photo 1">
+      
+        <!-- Add more images as needed -->
+    </div>
+
+    <!-- Credit Card Details Box -->
+    <div class="credit-card-details">
+        <h2>Enter Credit Card Details</h2>
+        <!-- Add input fields for credit card details here -->
+        <label for="card-holder-name">Cardholder Name:</label>
+        <input type="text" id="card-holder-name" name="card-holder-name" placeholder="Enter cardholder's name">
+        <label for="credit-card-number">Credit Card Number:</label>
+        <input type="number" id="credit-card-number" name="credit-card-number"
+            placeholder="Enter your credit card number" pattern="\d*" inputmode="numeric">
+        <label for="expiration-date">Expiration Date:</label>
+        <input type="text" id="expiration-date" name="expiration-date" placeholder="MM/YYYY">
+        <label for="cvv">CVV:</label>
+        <input type="number" id="cvv" name="cvv" placeholder="Enter CVV" pattern="\d*" inputmode="numeric">
+    </div>
+
+    <!-- Reservation Button -->
+    <button class="reservation-button">Make Reservation</button>
+
+    <script>
+        const images = document.querySelectorAll('.gallery img');
+
+        images.forEach(img => {
+            img.addEventListener('mousemove', e => {
+                const rect = img.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const offsetY = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const deltaX = (offsetX - centerX) / centerX;
+                const deltaY = (offsetY - centerY) / centerY;
+                img.style.transform = `scale(2.5) translate(${deltaX * 10}px, ${deltaY * 10}px)`; // Adjust scale factor as needed
+                img.classList.add('zoomed');
+            });
+
+            img.addEventListener('mouseleave', () => {
+                img.style.transform = 'scale(1)';
+                img.classList.remove('zoomed');
+            });
+        });
+
+        // JavaScript validation for expiration date field
+        const expirationDateInput = document.getElementById('expiration-date');
+        expirationDateInput.addEventListener('input', function (e) {
+            this.value = this.value.replace(/\D/g, ''); // Remove any non-numeric characters
+            if (this.value.length > 2) {
+                // Auto-insert a slash after the second digit
+                this.value = this.value.slice(0, 2) + '/' + this.value.slice(2);
+            }
+        });
+    </script>
+</body>
+
+</html>
